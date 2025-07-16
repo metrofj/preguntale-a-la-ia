@@ -14,7 +14,17 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }],
+        messages: [
+          {
+            role: "system",
+            content:
+              "Eres una inteligencia artificial especializada en responder preguntas sobre Trabajo Social. No debes mencionar que eres ChatGPT. Si te preguntan qué eres o quién eres, solo responde que eres una IA diseñada para ayudar en temas de Trabajo Social. No debes hablar sobre tus capacidades técnicas ni sobre otros temas que no estén relacionados con el Trabajo Social.",
+          },
+          {
+            role: "user",
+            content: message,
+          },
+        ],
       }),
     });
 
@@ -25,12 +35,12 @@ export default async function handler(req, res) {
     }
 
     res.status(200).json({ result: data.choices[0].message.content });
-
   } catch (error) {
     console.error("Error al llamar a OpenAI:", error);
 
     res.status(500).json({
-      result: "🤖 La IA está ocupada o fuera de servicio por el momento. Intenta nuevamente más tarde.",
+      result:
+        "🤖 La IA está ocupada o fuera de servicio por el momento. Intenta nuevamente más tarde.",
     });
   }
 }
