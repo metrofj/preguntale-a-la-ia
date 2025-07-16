@@ -30,11 +30,15 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    // ✅ Mostramos la respuesta exacta que devuelve OpenAI (para depuración)
+    console.log("Respuesta de OpenAI:", data);
+
     if (!response.ok || !data.choices || !data.choices[0]) {
       throw new Error("Error en la respuesta de OpenAI");
     }
 
     res.status(200).json({ result: data.choices[0].message.content });
+
   } catch (error) {
     console.error("Error al llamar a OpenAI:", error);
 
